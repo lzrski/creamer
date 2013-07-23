@@ -26,6 +26,7 @@ cc = require 'coffeecup'
 hardcode = require 'coffeecup-helpers'
 fs = require 'fs'
 wrench = require 'wrench'
+
 # broadway plug attach method
 #
 # Plugin Options
@@ -88,6 +89,7 @@ exports.attach = (options={}) ->
     page = registeredViews[page] if typeof page is 'string'
     data ?= {}
     if @req?.session? then data.session = @req.session
+    if typeof options.attach is "function" then options.attach.call @, data
     if options.layout? and typeof page is 'function'
       hardcode.content = page
       html = cc.render(options.layout, data, { hardcode, locals: true })
